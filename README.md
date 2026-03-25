@@ -81,3 +81,8 @@ python download_parallel.py
 ## License
 
 MIT
+
+
+eu-west-3
+AAKIA5FYADW6PFSF77XUU
+cN/J9d5ZlwytXgCKybepRR5Bo3Wjh7kWpTP2s4DW
