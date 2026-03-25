@@ -2,6 +2,12 @@
 """
 Lightreel Video Downloader
 Downloads videos from JSON metadata and uploads to S3
+
+Usage:
+    export AWS_ACCESS_KEY_ID=your_key
+    export AWS_SECRET_ACCESS_KEY=your_secret
+    export AWS_REGION=eu-west-3
+    python download.py
 """
 import boto3
 import requests

@@ -2,17 +2,23 @@
 """
 Lightreel Video Downloader - Parallel Version
 Uses multiprocessing for faster downloads
+
+Usage:
+    export AWS_ACCESS_KEY_ID=your_key
+    export AWS_SECRET_ACCESS_KEY=your_secret
+    export AWS_REGION=eu-west-3
+    python download_parallel.py
 """
 import boto3
 import requests
 import json
 import os
-from multiprocessing import Pool, cpu_count
+from multiprocessing import Pool
 
 S3_BUCKET = "lightreel-videos-prod-001"
 S3_PREFIX = "videos"
 JSON_KEY = "data/lightreel_all_videos.json"
-MAX_WORKERS = 32
+MAX_WORKERS = int(os.environ.get("MAX_WORKERS", "32"))
 
 def download_video(args):
     """Download a single video"""
@@ -29,7 +35,7 @@ def download_video(args):
                 ContentType="video/mp4"
             )
             return vid_id, True
-    except:
+    except Exception as e:
         pass
     return vid_id, False
 
@@ -52,8 +58,8 @@ def main():
             if key.endswith(".mp4"):
                 vid_id = key.replace(S3_PREFIX + "/", "").replace(".mp4", "")
                 downloaded.add(vid_id)
-    except:
-        pass
+    except Exception as e:
+        print(f"Note: {e}")
     
     print(f"Already downloaded: {len(downloaded)}")
     
