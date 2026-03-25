@@ -2,18 +2,21 @@
 """
 Lightreel Video Downloader - Parallel Version
 Uses multiprocessing for faster downloads
-
-Usage:
-    export AWS_ACCESS_KEY_ID=your_key
-    export AWS_SECRET_ACCESS_KEY=your_secret
-    export AWS_REGION=eu-west-3
-    python download_parallel.py
 """
 import boto3
 import requests
 import json
 import os
 from multiprocessing import Pool
+from pathlib import Path
+
+# Load credentials from .env file if exists
+env_file = Path(__file__).parent / ".env"
+if env_file.exists():
+    for line in env_file.read_text().strip().split("\n"):
+        if "=" in line and not os.environ.get(line.split("=")[0]):
+            key, val = line.strip().split("=", 1)
+            os.environ[key] = val
 
 S3_BUCKET = "lightreel-videos-prod-001"
 S3_PREFIX = "videos"
